@@ -39,6 +39,37 @@
     [self refreshData];
 }
 
+#pragma mark - Action methods
+
+-(void) addNewProduct:(id)sender {
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:@"New Product" message:@"Enter name, price and number" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [controller addAction:action];
+    [controller addTextFieldWithConfigurationHandler:^(UITextField * textField) {
+        [textField setKeyboardType:UIKeyboardTypeDefault];
+        textField.placeholder = @"Product name";
+    }];
+    [controller addTextFieldWithConfigurationHandler:^(UITextField * textField) {
+        [textField setKeyboardType:UIKeyboardTypeDecimalPad];
+        textField.placeholder = @"Price";
+    }];
+    [controller addTextFieldWithConfigurationHandler:^(UITextField * textField) {
+        [textField setKeyboardType:UIKeyboardTypeNumberPad];
+        textField.placeholder = @"Number";
+    }];
+    action = [UIAlertAction actionWithTitle:@"Create" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UITextField *textFieldName = controller.textFields[0];
+        NSDecimalNumber * price = [[NSDecimalNumber alloc]initWithString:controller.textFields[1].text];
+        NSInteger number = [controller.textFields[2].text intValue];
+        [self createProductWithName:textFieldName.text andPrice:price andNumber:number];
+    }];
+    
+    [controller addAction:action];
+    [self presentViewController:controller animated:YES completion:NULL];
+}
+
 #pragma mark - Private methods
 
 -(void) refreshData {
@@ -46,35 +77,19 @@
     [self.tableView reloadData];
 }
 
+-(void) createProductWithName:(NSString *)name andPrice:(NSDecimalNumber *)price andNumber:(NSInteger)number{
 
--(void) addNewProduct:(id)sender {
-    UIAlertController *controller = [UIAlertController alertControllerWithTitle:@"New Basket" message:@"Enter name" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        
-    }];
-    [controller addAction:action];
-    [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"Basket name";
-    }];
-    action = [UIAlertAction actionWithTitle:@"Create" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        UITextField *textField = controller.textFields[0];
-        [self createProductWithName:textField.text];
-    }];
-    
-    [controller addAction:action];
-    [self presentViewController:controller animated:YES completion:NULL];
-}
-
-
--(void) createProductWithName:(NSString *)name {
     NSManagedObjectContext *context = [CoreDataManager sharedInstance].managedObjectContext;
     CDProduct *product = [NSEntityDescription insertNewObjectForEntityForName:[[CDProduct class] description]
-                                                     inManagedObjectContext:context];
+                                                       inManagedObjectContext:context];
     product.name = name;
+    product.price = price;
+    product.number = number;
     [self.basket addProductsObject:product];
     [[CoreDataManager sharedInstance] saveContext];
     [self refreshData];
 }
+
 
 
 -(NSArray *) fetchProducts {
@@ -98,14 +113,6 @@
     
     UIAlertController * alertController = [self createAlertForProduct:product atIndexPath:indexPath];
     [self presentViewController:alertController animated:YES completion:nil];
-    
-//    CDProduct *product = self.items[indexPath.row];
-//    if ([product.complete boolValue]) {
-//        product.complete = @NO;
-//    } else {
-//        product.complete = @YES;
-//    }
-//    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     
  }
 
@@ -208,21 +215,6 @@
     
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
-
-//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if (editingStyle == UITableViewCellEditingStyleDelete) {
-//        CDProduct *product = self.items[indexPath.row];
-//        [[CoreDataManager sharedInstance].managedObjectContext deleteObject:product];
-//        NSMutableArray *items = [self.items mutableCopy];
-//        [items removeObject:product];
-//        self.items = [items copy];
-//        
-//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-//    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-//        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-//    }   
-//}
-
 
 /*
 // Override to support rearranging the table view.
