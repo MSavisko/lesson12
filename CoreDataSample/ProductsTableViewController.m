@@ -83,6 +83,8 @@
     action = [UIAlertAction actionWithTitle:@"Add" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSDecimalNumber * actualPrice = [[NSDecimalNumber alloc]initWithString:controller.textFields[0].text];
         product.actualPrice = actualPrice;
+        [[CoreDataManager sharedInstance] saveContext];
+        [self refreshData];
     }];
     [controller addAction:action];
     [self presentViewController:controller animated:YES completion:NULL];
@@ -126,6 +128,8 @@
         } else {
             NSLog(@"Number not changed. Length of number is less than 1 number");
         }
+        [[CoreDataManager sharedInstance] saveContext];
+        [self refreshData];
     }];
     [controller addAction:action];
     [self presentViewController:controller animated:YES completion:NULL];
@@ -190,7 +194,7 @@
                                  {
                                      NSLog(@"Edit action");
                                      [self editNameNumberAndPriceForProduct:product atIndexPath:indexPath];
-                                     // [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                                     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                                      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                                      //[self.tableView reloadData];
                                  }];
