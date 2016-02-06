@@ -88,6 +88,49 @@
     [self presentViewController:controller animated:YES completion:NULL];
 }
 
+- (void) editNameNumberAndPriceForProduct:(CDProduct*)product atIndexPath:(NSIndexPath *)indexPath {
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:@"Edit mode" message:@"Edit what you want" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [controller addAction:action];
+    
+    [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        [textField setKeyboardType:UIKeyboardTypeDefault];
+        textField.placeholder = [NSString stringWithFormat:@"Current product name: %@", product.name];
+    }];
+    [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        [textField setKeyboardType:UIKeyboardTypeDecimalPad];
+        textField.placeholder = [NSString stringWithFormat:@"Current price: %@", product.price];
+    }];
+    [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        [textField setKeyboardType:UIKeyboardTypeNumberPad];
+        textField.placeholder = [NSString stringWithFormat:@"Current numbers of product: %ld", (long)product.number];
+    }];
+    action = [UIAlertAction actionWithTitle:@"Change" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        //Checked for changes
+        if (controller.textFields[0].text.length >= 2) {
+            product.name = controller.textFields[0].text;
+        } else {
+            NSLog(@"Name not changed. Length of name is less than 2 symbols");
+        }
+        
+        if (controller.textFields[1].text.length >= 1) {
+            NSDecimalNumber * price = [[NSDecimalNumber alloc]initWithString:controller.textFields[1].text];
+            product.price = price;
+        } else {
+            NSLog(@"Price not changed. Length of price is less than 1 number");
+        }
+        if (controller.textFields[2].text.length >=1 ) {
+            NSInteger number = [controller.textFields[2].text intValue];
+            product.number = number;
+        } else {
+            NSLog(@"Number not changed. Length of number is less than 1 number");
+        }
+    }];
+    [controller addAction:action];
+    [self presentViewController:controller animated:YES completion:NULL];
+}
+
 #pragma mark - Private methods
 
 -(void) refreshData {
@@ -146,7 +189,10 @@
                                  handler:^(UIAlertAction *action)
                                  {
                                      NSLog(@"Edit action");
+                                     [self editNameNumberAndPriceForProduct:product atIndexPath:indexPath];
+                                     // [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                                      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                                     //[self.tableView reloadData];
                                  }];
     
     UIAlertAction *buyAction = [UIAlertAction
