@@ -88,14 +88,89 @@
 }
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     CDProduct *product = self.items[indexPath.row];
     if ([product.complete boolValue]) {
         product.complete = @NO;
     } else {
         product.complete = @YES;
     }
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    
+    UIAlertController * alertController = [self createAlertForProduct:product atIndexPath:indexPath];
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+//    CDProduct *product = self.items[indexPath.row];
+//    if ([product.complete boolValue]) {
+//        product.complete = @NO;
+//    } else {
+//        product.complete = @YES;
+//    }
+//    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    
  }
+
+- (UIAlertController *) createAlertForProduct:(CDProduct *)product atIndexPath: (NSIndexPath *) indexPath {
+    
+    UIAlertController *alertController = [UIAlertController
+                                          alertControllerWithTitle:@"Edit mode"
+                                          message:@"What to do?"
+                                          preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *editAction = [UIAlertAction
+                                 actionWithTitle:NSLocalizedString(@"Edit", @"Edit action")
+                                 style:UIAlertActionStyleDefault
+                                 handler:^(UIAlertAction *action)
+                                 {
+                                     NSLog(@"Edit action");
+                                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                                 }];
+    
+    UIAlertAction *buyAction = [UIAlertAction
+                                actionWithTitle:NSLocalizedString(@"Mark as Bought", @"Mark as Bought action")
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction *action)
+                                {
+                                    NSLog(@"Buyed action");
+                                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                                }];
+    
+    UIAlertAction *unBuyAction = [UIAlertAction
+                                actionWithTitle:NSLocalizedString(@"Mark as Unbought", @"Mark as Unbought action")
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction *action)
+                                {
+                                    NSLog(@"Unbuyed action");
+                                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                                }];
+    
+    UIAlertAction *deleteAction = [UIAlertAction
+                                   actionWithTitle:NSLocalizedString(@"Delete", @"Delete action")
+                                   style:UIAlertActionStyleDestructive
+                                   handler:^(UIAlertAction *action)
+                                   {
+                                       NSLog(@"Delete action");
+                                       [self deleteProduct:product inTableView:self.tableView forRowAtIndexPath:indexPath];
+                                   }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction
+                                   actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel action")
+                                   style:UIAlertActionStyleCancel
+                                   handler:^(UIAlertAction *action)
+                                   {
+                                       NSLog(@"Cancel action");
+                                       [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                                   }];
+    
+    [alertController addAction:deleteAction];
+    [alertController addAction:editAction];
+    if ([product.complete boolValue]) {
+        [alertController addAction:buyAction];
+    } else {
+        [alertController addAction:unBuyAction];
+    }
+    [alertController addAction:cancelAction];
+    return alertController;
+}
 
 #pragma mark - Table view data source
 
@@ -116,7 +191,6 @@
     return cell;
 }
 
-
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -125,19 +199,29 @@
 }
 */
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        CDProduct *product = self.items[indexPath.row];
-        [[CoreDataManager sharedInstance].managedObjectContext deleteObject:product];
-        NSMutableArray *items = [self.items mutableCopy];
-        [items removeObject:product];
-        self.items = [items copy];
-        
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+- (void) deleteProduct: (CDProduct *)product inTableView: (UITableView *)tableView forRowAtIndexPath: (NSIndexPath *)indexPath {
+    //CDProduct *product = self.items[indexPath.row];
+    [[CoreDataManager sharedInstance].managedObjectContext deleteObject:product];
+    NSMutableArray *items = [self.items mutableCopy];
+    [items removeObject:product];
+    self.items = [items copy];
+    
+    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
+
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+//    if (editingStyle == UITableViewCellEditingStyleDelete) {
+//        CDProduct *product = self.items[indexPath.row];
+//        [[CoreDataManager sharedInstance].managedObjectContext deleteObject:product];
+//        NSMutableArray *items = [self.items mutableCopy];
+//        [items removeObject:product];
+//        self.items = [items copy];
+//        
+//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+//        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+//    }   
+//}
 
 
 /*
