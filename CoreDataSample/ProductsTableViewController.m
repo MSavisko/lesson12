@@ -47,15 +47,15 @@
         
     }];
     [controller addAction:action];
-    [controller addTextFieldWithConfigurationHandler:^(UITextField * textField) {
+    [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         [textField setKeyboardType:UIKeyboardTypeDefault];
         textField.placeholder = @"Product name";
     }];
-    [controller addTextFieldWithConfigurationHandler:^(UITextField * textField) {
+    [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         [textField setKeyboardType:UIKeyboardTypeDecimalPad];
         textField.placeholder = @"Price";
     }];
-    [controller addTextFieldWithConfigurationHandler:^(UITextField * textField) {
+    [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         [textField setKeyboardType:UIKeyboardTypeNumberPad];
         textField.placeholder = @"Number";
     }];
@@ -66,6 +66,24 @@
         [self createProductWithName:textFieldName.text andPrice:price andNumber:number];
     }];
     
+    [controller addAction:action];
+    [self presentViewController:controller animated:YES completion:NULL];
+}
+
+- (void) addActualPriceForProduct:(CDProduct *)product atIndexPath:(NSIndexPath*)indexPath {
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:@"Actual Price" message:@"Enter actual price of product" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [controller addAction:action];
+    [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        [textField setKeyboardType:UIKeyboardTypeDecimalPad];
+        textField.placeholder = @"Actual price";
+    }];
+    action = [UIAlertAction actionWithTitle:@"Add" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSDecimalNumber * actualPrice = [[NSDecimalNumber alloc]initWithString:controller.textFields[0].text];
+        product.actualPrice = actualPrice;
+    }];
     [controller addAction:action];
     [self presentViewController:controller animated:YES completion:NULL];
 }
@@ -90,8 +108,6 @@
     [self refreshData];
 }
 
-
-
 -(NSArray *) fetchProducts {
     NSManagedObjectContext *context = [CoreDataManager sharedInstance].managedObjectContext;
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[[CDProduct class] description]];
@@ -107,6 +123,7 @@
     CDProduct *product = self.items[indexPath.row];
     if ([product.complete boolValue]) {
         product.complete = @NO;
+        
     } else {
         product.complete = @YES;
     }
@@ -138,6 +155,7 @@
                                 handler:^(UIAlertAction *action)
                                 {
                                     NSLog(@"Buyed action");
+                                    [self addActualPriceForProduct:product atIndexPath:indexPath];
                                     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                                 }];
     
