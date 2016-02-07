@@ -168,13 +168,6 @@
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     CDProduct *product = self.items[indexPath.row];
-//    if ([product.complete boolValue]) {
-//        product.complete = @NO;
-//        
-//    } else {
-//        product.complete = @YES;
-//    }
-    
     UIAlertController * alertController = [self createAlertForProduct:product atIndexPath:indexPath];
     [self presentViewController:alertController animated:YES completion:nil];
     
@@ -226,6 +219,8 @@
                                    {
                                        NSLog(@"Delete action");
                                        [self deleteProduct:product inTableView:self.tableView forRowAtIndexPath:indexPath];
+                                       [[CoreDataManager sharedInstance] saveContext];
+                                       [self refreshData];
                                    }];
     
     UIAlertAction *cancelAction = [UIAlertAction
@@ -281,7 +276,6 @@
     NSMutableArray *items = [self.items mutableCopy];
     [items removeObject:product];
     self.items = [items copy];
-    
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
