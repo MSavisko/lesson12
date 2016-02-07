@@ -44,11 +44,17 @@
     }];
     [controller addAction:action];
     [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        [textField setKeyboardType:UIKeyboardTypeDefault];
         textField.placeholder = @"Basket name";
     }];
+//    [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+//        [textField setKeyboardType:UIKeyboardTypeNumberPad];
+//        textField.placeholder = @"Date";
+//    }];
     action = [UIAlertAction actionWithTitle:@"Create" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        UITextField *textField = controller.textFields[0];
-        [self createBasketWithName:textField.text];
+        UITextField *textFieldBasket = controller.textFields[0];
+        //UITextField *textFieldDate = controller.textFields[1];
+        [self createBasketWithName:textFieldBasket.text];
     }];
     
     [controller addAction:action];

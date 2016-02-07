@@ -245,7 +245,6 @@
 }
 
 - (NSString *)totalPriceForProduct:(CDProduct*)product {
-    //NSString * stringNumber = [NSString stringWithFormat:@"%ld", (long)product.number];
     NSDecimalNumber * productNumber = [[NSDecimalNumber alloc]initWithUnsignedLong:product.number];
     NSDecimalNumber * totalResult = [product.price decimalNumberByMultiplyingBy:productNumber];
     NSString * total = [NSString stringWithFormat:@"Number: %ld Total: %@", (long)product.number, totalResult];
@@ -278,9 +277,6 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    NSIndexPath * indexPathForCell = [NSIndexPath indexPathForRow:indexPath.row inSection:1];
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPathForCell];
-    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
     cell = [cell initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier"];
     CDProduct *product = self.items[indexPath.row];
@@ -303,7 +299,6 @@
 */
 
 - (void) deleteProduct: (CDProduct *)product inTableView: (UITableView *)tableView forRowAtIndexPath: (NSIndexPath *)indexPath {
-    //CDProduct *product = self.items[indexPath.row];
     [[CoreDataManager sharedInstance].managedObjectContext deleteObject:product];
     NSMutableArray *items = [self.items mutableCopy];
     [items removeObject:product];
