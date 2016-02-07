@@ -150,6 +150,7 @@
     product.name = name;
     product.price = price;
     product.number = number;
+    product.complete =@NO;
     [self.basket addProductsObject:product];
     [[CoreDataManager sharedInstance] saveContext];
     [self refreshData];
@@ -234,7 +235,7 @@
     
     [alertController addAction:deleteAction];
     [alertController addAction:editAction];
-    if ([product.complete boolValue]) {
+    if ([product.complete isEqual:@YES]) {
         [alertController addAction:unBuyAction];
     } else {
         [alertController addAction:buyAction];
@@ -249,9 +250,26 @@
     return [self.items count];
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return @"Bought";
+            break;
+        case 1:
+            return @"Not Bought";
+    }
+    return nil;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
+    NSIndexPath * indexPathForCell = [NSIndexPath indexPathForRow:indexPath.row inSection:1];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPathForCell];
     CDProduct *product = self.items[indexPath.row];
     cell.textLabel.text = product.name;
     if ([product.complete boolValue]) {
@@ -278,10 +296,6 @@
     self.items = [items copy];
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
-
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-//    return 2;
-//}
 
 /*
 // Override to support rearranging the table view.

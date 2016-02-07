@@ -20,6 +20,7 @@
 		1C4C402F1C5FCAF400FF119A /* CDBasket+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C4C402A1C5FCAF400FF119A /* CDBasket+CoreDataProperties.m */; };
 		1C4C40301C5FCAF400FF119A /* CDBasket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C4C402C1C5FCAF400FF119A /* CDBasket.m */; };
 		1C4C40331C5FD40E00FF119A /* ProductsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C4C40321C5FD40E00FF119A /* ProductsTableViewController.m */; };
+		89C344BB1C677E3E0076134D /* ProductsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 89C344BA1C677E3E0076134D /* ProductsTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,8 @@
 		1C4C402C1C5FCAF400FF119A /* CDBasket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDBasket.m; sourceTree = "<group>"; };
 		1C4C40311C5FD40E00FF119A /* ProductsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductsTableViewController.h; sourceTree = "<group>"; };
 		1C4C40321C5FD40E00FF119A /* ProductsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductsTableViewController.m; sourceTree = "<group>"; };
+		89C344B91C677E3E0076134D /* ProductsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductsTableViewCell.h; sourceTree = "<group>"; };
+		89C344BA1C677E3E0076134D /* ProductsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductsTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +88,8 @@
 				1C4C400E1C5FC47600FF119A /* ViewController.m */,
 				1C4C40311C5FD40E00FF119A /* ProductsTableViewController.h */,
 				1C4C40321C5FD40E00FF119A /* ProductsTableViewController.m */,
+				89C344B91C677E3E0076134D /* ProductsTableViewCell.h */,
+				89C344BA1C677E3E0076134D /* ProductsTableViewCell.m */,
 				1C4C40101C5FC47600FF119A /* Main.storyboard */,
 				1C4C40161C5FC47600FF119A /* Assets.xcassets */,
 				1C4C40181C5FC47600FF119A /* LaunchScreen.storyboard */,
@@ -196,6 +201,7 @@
 				1C4C400F1C5FC47600FF119A /* ViewController.m in Sources */,
 				1C4C40231C5FC79200FF119A /* CoreDataManager.m in Sources */,
 				1C4C402F1C5FCAF400FF119A /* CDBasket+CoreDataProperties.m in Sources */,
+				89C344BB1C677E3E0076134D /* ProductsTableViewCell.m in Sources */,
 				1C4C400C1C5FC47600FF119A /* AppDelegate.m in Sources */,
 				1C4C40301C5FCAF400FF119A /* CDBasket.m in Sources */,
 				1C4C40091C5FC47600FF119A /* main.m in Sources */,
