@@ -168,12 +168,12 @@
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     CDProduct *product = self.items[indexPath.row];
-    if ([product.complete boolValue]) {
-        product.complete = @NO;
-        
-    } else {
-        product.complete = @YES;
-    }
+//    if ([product.complete boolValue]) {
+//        product.complete = @NO;
+//        
+//    } else {
+//        product.complete = @YES;
+//    }
     
     UIAlertController * alertController = [self createAlertForProduct:product atIndexPath:indexPath];
     [self presentViewController:alertController animated:YES completion:nil];
@@ -196,7 +196,6 @@
                                      [self editNameNumberAndPriceForProduct:product atIndexPath:indexPath];
                                      [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                                      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-                                     //[self.tableView reloadData];
                                  }];
     
     UIAlertAction *buyAction = [UIAlertAction
@@ -205,6 +204,7 @@
                                 handler:^(UIAlertAction *action)
                                 {
                                     NSLog(@"Buyed action");
+                                    product.complete = @YES;
                                     [self addActualPriceForProduct:product atIndexPath:indexPath];
                                     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                                 }];
@@ -215,6 +215,7 @@
                                 handler:^(UIAlertAction *action)
                                 {
                                     NSLog(@"Unbuyed action");
+                                    product.complete = @NO;
                                     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                                 }];
     
@@ -239,9 +240,9 @@
     [alertController addAction:deleteAction];
     [alertController addAction:editAction];
     if ([product.complete boolValue]) {
-        [alertController addAction:buyAction];
-    } else {
         [alertController addAction:unBuyAction];
+    } else {
+        [alertController addAction:buyAction];
     }
     [alertController addAction:cancelAction];
     return alertController;
@@ -283,6 +284,10 @@
     
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
+
+//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+//    return 2;
+//}
 
 /*
 // Override to support rearranging the table view.
