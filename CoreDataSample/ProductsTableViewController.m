@@ -251,25 +251,28 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    //return 2;
+    return 1;
 }
 
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    switch (section) {
-        case 0:
-            return @"Bought";
-            break;
-        case 1:
-            return @"Not Bought";
-    }
-    return nil;
+//    switch (section) {
+//        case 0:
+//            return @"Bought";
+//            break;
+//        case 1:
+//            return @"Not Bought";
+//    }
+//    return nil;
+    return @"Buy list";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSIndexPath * indexPathForCell = [NSIndexPath indexPathForRow:indexPath.row inSection:1];
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPathForCell];
+//    NSIndexPath * indexPathForCell = [NSIndexPath indexPathForRow:indexPath.row inSection:1];
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPathForCell];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
     CDProduct *product = self.items[indexPath.row];
     cell.textLabel.text = product.name;
     if ([product.complete boolValue]) {
